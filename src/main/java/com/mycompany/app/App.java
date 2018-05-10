@@ -5,8 +5,12 @@ package com.mycompany.app;
  *
  */
  
-import com.microsoft.azure.sdk.iot.device.*;
-import com.microsoft.azure.sdk.iot.device.DeviceTwin.*;
+import com.microsoft.azure.sdk.iot.device.IotHubEventCallback;
+import com.microsoft.azure.sdk.iot.device.IotHubClientProtocol;
+import com.microsoft.azure.sdk.iot.device.IotHubStatusCode;
+import com.microsoft.azure.sdk.iot.device.DeviceClient;
+import com.microsoft.azure.sdk.iot.device.DeviceTwin.DeviceMethodData;
+import com.microsoft.azure.sdk.iot.device.DeviceTwin.DeviceMethodCallback;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -16,14 +20,14 @@ import java.util.Scanner;
 public class App 
 {
 
-	private static String connString = "HostName=utopiahub1.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=FNtx8vg1ZGwnVGGukV8rf66//C1eL9xIsml+Kon30bQ=";
+	//private static String connString = "HostName=utopiahub1.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=FNtx8vg1ZGwnVGGukV8rf66//C1eL9xIsml+Kon30bQ=";
+	private static String connString = "HostName=utopiahub1.azure-devices.net;DeviceId=device4;SharedAccessKey=q3pcsPIJSAZBwIueYlzqT0dJH+R1xazsgNFfn67r7Ac=";
 	private static IotHubClientProtocol protocol = IotHubClientProtocol.MQTT;
 	private static String deviceId = "device4";
 	private static final int METHOD_SUCCESS = 200;
 	private static final int METHOD_NOT_DEFINED = 404;
 
-	public static void main(String[] args)
-	  throws IOException, URISyntaxException
+	public static void main(String[] args) throws IOException, URISyntaxException
 	{
 	  System.out.println("Starting device sample...");
 
@@ -58,7 +62,8 @@ public class App
 		System.out.println("IoT Hub responded to device method operation with status " + status.name());
 	  }
 	}
-	protected static class DirectMethodCallback implements com.microsoft.azure.sdk.iot.device.DeviceTwin.DeviceMethodCallback
+	
+	protected static class DirectMethodCallback implements DeviceMethodCallback
 	{
 	  @Override
 	  public DeviceMethodData call(String methodName, Object methodData, Object context)
@@ -82,6 +87,5 @@ public class App
 		return deviceMethodData;
 	  }
 	}
-	
 	
 }
