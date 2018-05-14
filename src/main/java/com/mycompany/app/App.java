@@ -26,6 +26,7 @@ public class App
 	private static String deviceId = "device4";
 	private static final int METHOD_SUCCESS = 200;
 	private static final int METHOD_NOT_DEFINED = 404;
+	private static int counter = 0;
 
 	public static void main(String[] args) throws IOException, URISyntaxException
 	{
@@ -69,19 +70,20 @@ public class App
 	  public DeviceMethodData call(String methodName, Object methodData, Object context)
 	  {
 		DeviceMethodData deviceMethodData;
+		counter++;
 		switch (methodName)
 		{
 		  case "writeLine" :
 		  {
 			int status = METHOD_SUCCESS;
 			System.out.println(new String((byte[])methodData));
-			deviceMethodData = new DeviceMethodData(status, "Executed direct method " + methodName);
+			deviceMethodData = new DeviceMethodData(status, "Executed direct method " + methodName + " counter: " + counter);
 			break;
 		  }
 		  default:
 		  {
 			int status = METHOD_NOT_DEFINED;
-			deviceMethodData = new DeviceMethodData(status, "Not defined direct method " + methodName);
+			deviceMethodData = new DeviceMethodData(status, "Not defined direct method " + methodName + " counter: " + counter);
 		  }
 		}
 		return deviceMethodData;
