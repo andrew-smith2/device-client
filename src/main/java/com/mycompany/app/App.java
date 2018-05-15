@@ -21,9 +21,9 @@ import java.util.Scanner;
  
 public class App
 {
-	private static String connString = "HostName=team5hub.azure-devices.net;DeviceId=team5device1;SharedAccessKey=Uia6hBAvxHqVqKyk2wR/IGGBEHTDkaqinJZWYkmW09A=";
+	private static String connString = "{ azure device connection string }";
 	private static IotHubClientProtocol protocol = IotHubClientProtocol.MQTT;
-	private static String deviceId = "device4";
+	private static String deviceId = "{ device ID }";
 	private static final int METHOD_SUCCESS = 200;
 	private static final int METHOD_NOT_DEFINED = 404;
 	
