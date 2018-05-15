@@ -18,6 +18,5 @@ Client application that exposes direct method
 4. Edit the App.java file and update the connection string to the Azure Device and Device ID with the provided connection string/DeviceID in Hackathon instructions
 5. Type <code>mvn clean package</code> in the terminal
 6. Fix any build errors
-7. For linux type <code>java -jar target/device-client-1.0-SNAPSHOT.jar</code> to run application
-   For windows type <code>java -jar target\device-client-1.0-SNAPSHOT.jar</code> to run application
+7. For linux type <code>java -jar target/device-client-1.0-SNAPSHOT.jar</code> to run application<br/>For windows type <code>java -jar target\device-client-1.0-SNAPSHOT.jar</code> to run application
 
