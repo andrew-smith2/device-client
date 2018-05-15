@@ -2,7 +2,6 @@ package com.mycompany.app;
 
 /**
  * DEvice Client
- *
  */
  
 import com.microsoft.azure.sdk.iot.device.IotHubEventCallback;
@@ -20,10 +19,8 @@ import java.net.URISyntaxException;
 import java.util.Scanner;
  
  
-public class App 
+public class App
 {
-
-	//private static String connString = "HostName=utopiahub1.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=FNtx8vg1ZGwnVGGukV8rf66//C1eL9xIsml+Kon30bQ=";
 	private static String connString = "HostName=team5hub.azure-devices.net;DeviceId=team5device1;SharedAccessKey=Uia6hBAvxHqVqKyk2wR/IGGBEHTDkaqinJZWYkmW09A=";
 	private static IotHubClientProtocol protocol = IotHubClientProtocol.MQTT;
 	private static String deviceId = "device4";
@@ -57,11 +54,23 @@ public class App
 	  System.out.println("Shutting down...");
 	}
 
-	public static class Payload {
+	
+	public static class Payload
+	{
 		public int temp;
-		public Payload(){};
+		public Payload() {};
+		
+		public int getTemp()
+		{
+			return this.temp;
+		}
+		
+		public void setTemp(int temperature)
+		{
+			this.temp = temperature;
+		}
 	}
-
+	
 	
 	protected static class DirectMethodStatusCallback implements IotHubEventCallback
 	{
@@ -71,42 +80,37 @@ public class App
 	  }
 	}
 	
-
-
 	
 	protected static class DirectMethodCallback implements DeviceMethodCallback
 	{
-	  Gson gson = new Gson(); 
+		Gson gson = new Gson(); 
 		Random rand = new Random();
-
+		
 		@Override
 		public DeviceMethodData call(String methodName, Object methodData, Object context)
-	  {
-		DeviceMethodData deviceMethodData;
-		
-		switch (methodName)
 		{
-		  case "writeLine" :
-		  {
-			int status = METHOD_SUCCESS;
-			
+			DeviceMethodData deviceMethodData;
 			Payload payloadAsObject = new Payload();
-			//returns random number to represnet a temperature and sets into payloadAsObject
-			payloadAsObject.temp = rand.nextInt(100) + 1;
-
-			System.out.println("Sent: " + gson.toJson(payloadAsObject));
-
-			deviceMethodData = new DeviceMethodData(status, gson.toJson(payloadAsObject));
-			break;
-		  }
-		  default:
-		  {
-			int status = METHOD_NOT_DEFINED;
-			deviceMethodData = new DeviceMethodData(status, "Not defined direct method " + methodName);
-		  }
+			// returns random number to represnet a temperature and initializes member of Payload class
+			payloadAsObject.setTemp(rand.nextInt(100) + 1);
+			
+			switch (methodName)
+			{
+				case "writeLine" :
+				{
+					int status = METHOD_SUCCESS;
+					System.out.println("Sent: " + gson.toJson(payloadAsObject));
+					deviceMethodData = new DeviceMethodData(status, gson.toJson(payloadAsObject));
+					break;
+				}
+				default:
+				{
+					int status = METHOD_NOT_DEFINED;
+					deviceMethodData = new DeviceMethodData(status, "Not defined direct method " + methodName);
+				}
+			}
+			return deviceMethodData;
 		}
-		return deviceMethodData;
-	  }
 	}
-	
+
 }
