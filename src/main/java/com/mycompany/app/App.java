@@ -11,6 +11,8 @@ import com.microsoft.azure.sdk.iot.device.IotHubStatusCode;
 import com.microsoft.azure.sdk.iot.device.DeviceClient;
 import com.microsoft.azure.sdk.iot.device.DeviceTwin.DeviceMethodData;
 import com.microsoft.azure.sdk.iot.device.DeviceTwin.DeviceMethodCallback;
+import java.util.Arrays; 
+import com.google.gson.Gson; 
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -21,19 +23,20 @@ public class App
 {
 
 	//private static String connString = "HostName=utopiahub1.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=FNtx8vg1ZGwnVGGukV8rf66//C1eL9xIsml+Kon30bQ=";
-	private static String connString = "HostName=utopiahub1.azure-devices.net;DeviceId=device4;SharedAccessKey=q3pcsPIJSAZBwIueYlzqT0dJH+R1xazsgNFfn67r7Ac=";
+	private static String connString = "HostName=team5hub.azure-devices.net;DeviceId=team5device1;SharedAccessKey=Uia6hBAvxHqVqKyk2wR/IGGBEHTDkaqinJZWYkmW09A=";
 	private static IotHubClientProtocol protocol = IotHubClientProtocol.MQTT;
 	private static String deviceId = "device4";
 	private static final int METHOD_SUCCESS = 200;
 	private static final int METHOD_NOT_DEFINED = 404;
 	private static int counter = 0;
 
+	
+  
 	public static void main(String[] args) throws IOException, URISyntaxException
 	{
 	  System.out.println("Starting device sample...");
 
 	  DeviceClient client = new DeviceClient(connString, protocol);
-
 	  try
 	  {
 		client.open();
@@ -55,6 +58,11 @@ public class App
 	  System.out.println("Shutting down...");
 	}
 
+	public static class Payload {
+		public int counter;
+		public Payload(){};
+	}
+
 	
 	protected static class DirectMethodStatusCallback implements IotHubEventCallback
 	{
@@ -64,10 +72,14 @@ public class App
 	  }
 	}
 	
+
+
+	
 	protected static class DirectMethodCallback implements DeviceMethodCallback
 	{
-	  @Override
-	  public DeviceMethodData call(String methodName, Object methodData, Object context)
+	  Gson gson = new Gson(); 
+		@Override
+		public DeviceMethodData call(String methodName, Object methodData, Object context)
 	  {
 		DeviceMethodData deviceMethodData;
 		counter++;
@@ -76,8 +88,15 @@ public class App
 		  case "writeLine" :
 		  {
 			int status = METHOD_SUCCESS;
-			System.out.println(new String((byte[])methodData));
-			deviceMethodData = new DeviceMethodData(status, "Executed direct method " + methodName + " counter: " + counter);
+			
+			//probably a better way to do this in a 1 liner
+			String jsonRequest = gson.fromJson(new String((byte[])methodData), String.class);
+			Payload payloadAsObject = gson.fromJson(jsonRequest, Payload.class);
+	
+			payloadAsObject.counter ++;	
+			System.out.println("Sent: " + gson.toJson(payloadAsObject));
+
+			deviceMethodData = new DeviceMethodData(status, gson.toJson(payloadAsObject));
 			break;
 		  }
 		  default:
