@@ -12,7 +12,8 @@ import com.microsoft.azure.sdk.iot.device.DeviceClient;
 import com.microsoft.azure.sdk.iot.device.DeviceTwin.DeviceMethodData;
 import com.microsoft.azure.sdk.iot.device.DeviceTwin.DeviceMethodCallback;
 import java.util.Arrays; 
-import com.google.gson.Gson; 
+import com.google.gson.Gson;
+import java.util.Random;	 
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -28,8 +29,6 @@ public class App
 	private static String deviceId = "device4";
 	private static final int METHOD_SUCCESS = 200;
 	private static final int METHOD_NOT_DEFINED = 404;
-	private static int counter = 0;
-
 	
   
 	public static void main(String[] args) throws IOException, URISyntaxException
@@ -59,7 +58,7 @@ public class App
 	}
 
 	public static class Payload {
-		public int counter;
+		public int temp;
 		public Payload(){};
 	}
 
@@ -78,6 +77,8 @@ public class App
 	protected static class DirectMethodCallback implements DeviceMethodCallback
 	{
 	  Gson gson = new Gson(); 
+		Random rand = new Random();
+
 		@Override
 		public DeviceMethodData call(String methodName, Object methodData, Object context)
 	  {
@@ -89,11 +90,10 @@ public class App
 		  {
 			int status = METHOD_SUCCESS;
 			
-			//probably a better way to do this in a 1 liner
-			String jsonRequest = gson.fromJson(new String((byte[])methodData), String.class);
-			Payload payloadAsObject = gson.fromJson(jsonRequest, Payload.class);
-	
-			payloadAsObject.counter ++;	
+			Payload payloadAsObject = new Payload();
+			//returns random number to represnet a temperature and sets into payloadAsObject
+			payloadAsObject.temp = rand.nextInt(100) + 1;
+
 			System.out.println("Sent: " + gson.toJson(payloadAsObject));
 
 			deviceMethodData = new DeviceMethodData(status, gson.toJson(payloadAsObject));
