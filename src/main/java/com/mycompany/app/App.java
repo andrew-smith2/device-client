@@ -82,7 +82,7 @@ public class App
 		public DeviceMethodData call(String methodName, Object methodData, Object context)
 	  {
 		DeviceMethodData deviceMethodData;
-		counter++;
+		
 		switch (methodName)
 		{
 		  case "writeLine" :
@@ -102,7 +102,7 @@ public class App
 		  default:
 		  {
 			int status = METHOD_NOT_DEFINED;
-			deviceMethodData = new DeviceMethodData(status, "Not defined direct method " + methodName + " counter: " + counter);
+			deviceMethodData = new DeviceMethodData(status, "Not defined direct method " + methodName);
 		  }
 		}
 		return deviceMethodData;
