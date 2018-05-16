@@ -10,10 +10,10 @@ Client application that exposes direct method
 </ul>
 
 <b>Instructions</b>
-(You can either work on your laptop and build the solution then deploy to you Raspberry PI or you can develop on the Rapberry PI. The PI will contain JDK and Maven)
+(You can either work on your laptop and build the solution then deploy to you Raspberry PI or you can develop on the Rapberry PI. The PI will contain JDK and Maven and Git so you can easily clone the repository as needed.)
 
 1. Ensure you have JDK and Maven installed on your machine
-2. Download and unpack zipped file of application or clone respository using git clone
+2. Download and unpack zipped file of application or clone respository using <code>git clone https://github.com/spock75/device-client.git</code> from a terminal window on your pi or laptop in the folder you wish to house your app.
 3. Open terminal window to the location where the project files are located
 4. Edit the App.java file and update the connection string to the Azure Device and Device ID with the provided connection string/DeviceID in Hackathon instructions
 5. Type <code>mvn clean package</code> in the terminal
